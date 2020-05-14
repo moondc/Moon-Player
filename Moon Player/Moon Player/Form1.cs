@@ -83,5 +83,73 @@ namespace Moon_Player
                 songs.Add(new Song(file));
             }
         }
+
+        private void ListBoxFiles_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ListBox lb = (ListBox)sender;
+            Song song = (Song)lb.SelectedItem;
+            var tfile = TagLib.File.Create(song.Filename);
+            TextBoxSongName.Text = tfile.Tag.Title;
+            TextBoxAlbum.Text = tfile.Tag.Album;
+            TextBoxArtist.Text = tfile.Tag.FirstPerformer;
+        }
+
+        private void TextBoxSongName_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                Song song = (Song)ListBoxFiles.SelectedItem;
+                var tfile = TagLib.File.Create(song.Filename);
+                string newTitle = ((TextBox)sender).Text;
+                if (newTitle != tfile.Tag.Title)
+                {
+                    tfile.Tag.Title = ((TextBox)sender).Text;
+                    tfile.Save();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void TextBoxArtist_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                Song song = (Song)ListBoxFiles.SelectedItem;
+                var tfile = TagLib.File.Create(song.Filename);
+                string newArtist = ((TextBox)sender).Text;
+                if (newArtist != tfile.Tag.Title)
+                {
+                    string[] str = { ((TextBox)sender).Text };
+                    tfile.Tag.Performers = str;
+                    tfile.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void TextBoxAlbum_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                Song song = (Song)ListBoxFiles.SelectedItem;
+                var tfile = TagLib.File.Create(song.Filename);
+                string newAlbum = ((TextBox)sender).Text;
+                if (newAlbum != tfile.Tag.Title)
+                {
+                    tfile.Tag.Album = ((TextBox)sender).Text;
+                    tfile.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
