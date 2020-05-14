@@ -86,12 +86,19 @@ namespace Moon_Player
 
         private void ListBoxFiles_SelectedValueChanged(object sender, EventArgs e)
         {
-            ListBox lb = (ListBox)sender;
-            Song song = (Song)lb.SelectedItem;
-            var tfile = TagLib.File.Create(song.Filename);
-            TextBoxSongName.Text = tfile.Tag.Title;
-            TextBoxAlbum.Text = tfile.Tag.Album;
-            TextBoxArtist.Text = tfile.Tag.FirstPerformer;
+            try
+            {
+                ListBox lb = (ListBox)sender;
+                Song song = (Song)lb.SelectedItem;
+                var tfile = TagLib.File.Create(song.Filename);
+                TextBoxSongName.Text = tfile.Tag.Title;
+                TextBoxAlbum.Text = tfile.Tag.Album;
+                TextBoxArtist.Text = tfile.Tag.FirstPerformer;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void TextBoxSongName_Leave(object sender, EventArgs e)
