@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Text;
 
 namespace Moon_Player
 {
@@ -33,6 +34,7 @@ namespace Moon_Player
             Properties.Settings.Default.MusicDirectory = MusicDirectoryTextBox.Text;
             Properties.Settings.Default.Save();
         }
+
         private void MusicDirectoryTextBox_Leave(object sender, EventArgs e)
         {
             Properties.Settings.Default.MusicDirectory = MusicDirectoryTextBox.Text;
@@ -54,6 +56,7 @@ namespace Moon_Player
             
             ConvertToSongName(songs, songlist);
             ListBoxFiles.BeginUpdate();
+            ListBoxFiles.Items.Clear();
             foreach(Song song in songs)
             {
                 
@@ -76,6 +79,7 @@ namespace Moon_Player
                 AddSongs(extensionList, songlist, directory);
             }
         }
+
         private static void ConvertToSongName(List<Song> songs, List<string> files)
         {
             foreach(string file in files)
@@ -90,6 +94,7 @@ namespace Moon_Player
             {
                 ListBox lb = (ListBox)sender;
                 Song song = (Song)lb.SelectedItem;
+                Clipboard.SetText(song.Display);
                 var tfile = TagLib.File.Create(song.Filename);
                 TextBoxSongName.Text = tfile.Tag.Title;
                 TextBoxAlbum.Text = tfile.Tag.Album;
@@ -147,7 +152,7 @@ namespace Moon_Player
                 Song song = (Song)ListBoxFiles.SelectedItem;
                 var tfile = TagLib.File.Create(song.Filename);
                 string newAlbum = ((TextBox)sender).Text;
-                if (newAlbum != tfile.Tag.Title)
+                if (newAlbum != tfile.Tag.Album)
                 {
                     tfile.Tag.Album = ((TextBox)sender).Text;
                     tfile.Save();
@@ -157,6 +162,49 @@ namespace Moon_Player
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void IncompleteTagButton_Click(object sender, EventArgs e)
+        {
+            var test = ListBoxFiles.Items;
+            List<Song> InvalidSongMetaData = new List<Song>();
+            foreach (object obj in test)
+            {
+                Song song = (Song)obj;
+                try
+                {
+                    var tfile = TagLib.File.Create(song.Filename);
+
+                    String Title = tfile.Tag.Title;
+                    String Album = tfile.Tag.Album;
+                    String Artist = tfile.Tag.FirstPerformer;
+                    if(!(IsValidMetadata(Title) && IsValidMetadata(Album) && IsValidMetadata(Artist)))
+                    {
+                        song.Display = Title + " " + Album + " " + Artist;
+                        InvalidSongMetaData.Add(song);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    song.Display = ex.Message + " " + song.Filename;
+                    InvalidSongMetaData.Add(song);
+                }
+            }
+            ListBoxFiles.BeginUpdate();
+            ListBoxFiles.Items.Clear();
+            foreach(Song song in InvalidSongMetaData)
+            {
+                ListBoxFiles.Items.Add(song);
+            }
+            ListBoxFiles.EndUpdate();
+        }
+
+        private bool IsValidMetadata(string str)
+        {
+            if (str == null) return false;
+            if (str == "") return false;
+            if (str.Contains("??")) return false;
+            return true;
         }
     }
 }

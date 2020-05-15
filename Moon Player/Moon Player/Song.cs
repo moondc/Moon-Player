@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
 
 namespace Moon_Player
 {
@@ -14,13 +15,25 @@ namespace Moon_Player
         {
             Filename = filepath;
             Songname = (new FileInfo(filepath)).Name;
+            Display = Songname;
         }
         public string Filename { get; private set; }
         public string Songname { get; private set; }
+        public string Display
+        {
+            get { return display; }
+            set
+            {
+                if (String.IsNullOrWhiteSpace(value)) { display = Filename; }
+                else { display = value; }
+            }
+        }
+        private string display;
+        
 
         public override string ToString()
         {
-            return Songname;
+            return Display;
         }
     }
 }

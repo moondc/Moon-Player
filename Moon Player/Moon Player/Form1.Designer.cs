@@ -42,6 +42,7 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.MusicDirectoryTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.IncompleteTagButton = new System.Windows.Forms.Button();
             this.Main.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.IncompleteTagButton);
             this.tabPage2.Controls.Add(this.TextBoxAlbum);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.TextBoxArtist);
@@ -190,6 +192,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Music Directory";
             // 
+            // IncompleteTagButton
+            // 
+            this.IncompleteTagButton.Location = new System.Drawing.Point(460, 166);
+            this.IncompleteTagButton.Name = "IncompleteTagButton";
+            this.IncompleteTagButton.Size = new System.Drawing.Size(302, 23);
+            this.IncompleteTagButton.TabIndex = 8;
+            this.IncompleteTagButton.Text = "Find Next Incomplete Tag";
+            this.IncompleteTagButton.UseVisualStyleBackColor = true;
+            this.IncompleteTagButton.Click += new System.EventHandler(this.IncompleteTagButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,6 +237,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TextBoxSongName;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button IncompleteTagButton;
     }
 }
 
