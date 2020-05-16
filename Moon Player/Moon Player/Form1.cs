@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Text;
+using System.Diagnostics;
 
 namespace Moon_Player
 {
@@ -94,7 +95,15 @@ namespace Moon_Player
             {
                 ListBox lb = (ListBox)sender;
                 Song song = (Song)lb.SelectedItem;
-                Clipboard.SetText(song.Display);
+
+                if (File.Exists(song.Display))
+                {
+                    Clipboard.SetText(Path.GetFileNameWithoutExtension(song.Display));
+                }
+                else
+                {
+                    Clipboard.SetText(song.Display);
+                }
                 var tfile = TagLib.File.Create(song.Filename);
                 TextBoxSongName.Text = tfile.Tag.Title;
                 TextBoxAlbum.Text = tfile.Tag.Album;
@@ -168,11 +177,16 @@ namespace Moon_Player
         {
             var test = ListBoxFiles.Items;
             List<Song> InvalidSongMetaData = new List<Song>();
+            Double totalSongs = test.Count;
+            Double count = 0;
             foreach (object obj in test)
             {
                 Song song = (Song)obj;
                 try
                 {
+                    count++;
+                    PercentTag.Text = Math.Floor(100 * count / totalSongs).ToString() + "%";
+                    Application.DoEvents();
                     var tfile = TagLib.File.Create(song.Filename);
 
                     String Title = tfile.Tag.Title;
@@ -205,6 +219,48 @@ namespace Moon_Player
             if (str == "") return false;
             if (str.Contains("??")) return false;
             return true;
+        }
+
+        private void ButtonSongRenamer_Click(object sender, EventArgs e)
+        {
+            ButtonLoadSongs_Click(null, null);
+            Double totalSongs = ListBoxFiles.Items.Count;
+            Double count = 0;
+            string debugger= "";
+            foreach(Song song in ListBoxFiles.Items)
+            {
+                try
+                {
+                    // Allows other parts of the program to refresh during loop
+                    Application.DoEvents();
+                    count++;
+                    PercentTag.Text = Math.Floor(100 * count / totalSongs).ToString() + "%";
+                    var tfile = TagLib.File.Create(song.Filename);
+                    string Title = tfile.Tag.Title;
+                    string Album = tfile.Tag.Album;
+                    string Artist = tfile.Tag.FirstPerformer;
+                    if(String.IsNullOrWhiteSpace(Title) || String.IsNullOrWhiteSpace(Artist) || String.IsNullOrWhiteSpace(Album))
+                    {
+                        continue;
+                    }
+                    string newFilename = Title + " - " + Album + " - " + Artist;
+                    char[] invalidChars = Path.GetInvalidFileNameChars();
+                    foreach(char c in invalidChars)
+                    {
+                        newFilename = newFilename.Replace(c.ToString(), "");
+                    }
+                    string oldFullyQualifiedFileName = song.Filename;
+                    FileInfo fi = new FileInfo(oldFullyQualifiedFileName);
+                    string newFullyQualifiedFileName = fi.DirectoryName + "\\" + newFilename + fi.Extension;
+                    debugger = newFullyQualifiedFileName;
+                    if (oldFullyQualifiedFileName == newFullyQualifiedFileName) continue;
+                    File.Move(oldFullyQualifiedFileName, newFullyQualifiedFileName);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(song.Filename + "\n" + debugger + "\n" + ex.Message);
+                }
+            }
         }
     }
 }

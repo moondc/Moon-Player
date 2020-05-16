@@ -31,6 +31,7 @@
             this.Main = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.IncompleteTagButton = new System.Windows.Forms.Button();
             this.TextBoxAlbum = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.TextBoxArtist = new System.Windows.Forms.TextBox();
@@ -42,7 +43,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.MusicDirectoryTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.IncompleteTagButton = new System.Windows.Forms.Button();
+            this.ButtonSongRenamer = new System.Windows.Forms.Button();
+            this.PercentTag = new System.Windows.Forms.Label();
             this.Main.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -72,6 +74,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.PercentTag);
+            this.tabPage2.Controls.Add(this.ButtonSongRenamer);
             this.tabPage2.Controls.Add(this.IncompleteTagButton);
             this.tabPage2.Controls.Add(this.TextBoxAlbum);
             this.tabPage2.Controls.Add(this.label4);
@@ -88,6 +92,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Tagging";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // IncompleteTagButton
+            // 
+            this.IncompleteTagButton.Location = new System.Drawing.Point(460, 166);
+            this.IncompleteTagButton.Name = "IncompleteTagButton";
+            this.IncompleteTagButton.Size = new System.Drawing.Size(302, 23);
+            this.IncompleteTagButton.TabIndex = 8;
+            this.IncompleteTagButton.Text = "Find Next Incomplete Tag";
+            this.IncompleteTagButton.UseVisualStyleBackColor = true;
+            this.IncompleteTagButton.Click += new System.EventHandler(this.IncompleteTagButton_Click);
             // 
             // TextBoxAlbum
             // 
@@ -192,15 +206,24 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Music Directory";
             // 
-            // IncompleteTagButton
+            // ButtonSongRenamer
             // 
-            this.IncompleteTagButton.Location = new System.Drawing.Point(460, 166);
-            this.IncompleteTagButton.Name = "IncompleteTagButton";
-            this.IncompleteTagButton.Size = new System.Drawing.Size(302, 23);
-            this.IncompleteTagButton.TabIndex = 8;
-            this.IncompleteTagButton.Text = "Find Next Incomplete Tag";
-            this.IncompleteTagButton.UseVisualStyleBackColor = true;
-            this.IncompleteTagButton.Click += new System.EventHandler(this.IncompleteTagButton_Click);
+            this.ButtonSongRenamer.Location = new System.Drawing.Point(460, 364);
+            this.ButtonSongRenamer.Name = "ButtonSongRenamer";
+            this.ButtonSongRenamer.Size = new System.Drawing.Size(260, 23);
+            this.ButtonSongRenamer.TabIndex = 9;
+            this.ButtonSongRenamer.Text = "Rename all songs according to metadata";
+            this.ButtonSongRenamer.UseVisualStyleBackColor = true;
+            this.ButtonSongRenamer.Click += new System.EventHandler(this.ButtonSongRenamer_Click);
+            // 
+            // PercentTag
+            // 
+            this.PercentTag.AutoSize = true;
+            this.PercentTag.Location = new System.Drawing.Point(726, 369);
+            this.PercentTag.Name = "PercentTag";
+            this.PercentTag.Size = new System.Drawing.Size(33, 13);
+            this.PercentTag.TabIndex = 10;
+            this.PercentTag.Text = "100%";
             // 
             // Form1
             // 
@@ -238,6 +261,8 @@
         private System.Windows.Forms.TextBox TextBoxSongName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button IncompleteTagButton;
+        private System.Windows.Forms.Button ButtonSongRenamer;
+        private System.Windows.Forms.Label PercentTag;
     }
 }
 
