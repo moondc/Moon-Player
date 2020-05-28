@@ -15,7 +15,7 @@ namespace Moon_Player
         {
             Filename = filepath;
             Songname = (new FileInfo(filepath)).Name;
-            Display = Songname;
+            Display = Path.GetFileNameWithoutExtension(filepath);
         }
         public string Filename { get; private set; }
         public string Songname { get; private set; }
